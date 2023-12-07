@@ -51,21 +51,17 @@ asm_fib_rek:
         ret
 
         .recurse:
-        mov rax, rdi
-        sub rax, 2      ; n-2
-        push rdi        ; push n to stack
-        mov rdi, rax    ; prepare rdi for call with n-2
+        push rdi
+        sub rdi, 2      ; n-2
         call asm_fib_rek; fib(n-2)
 
-        mov r8, rax     ; mov result of call to r8
-        pop rax         ; get n from stack
-
-        push r8         ; save result of fib(n-2)
-        sub rax, 1      ; n-1
-        mov rdi, rax    ; prepare rdi for call with n-1
+        pop rdi         ; get n from stack
+        push rax        ; push fib(n-1) result
+        sub rdi, 1      ; n-1
         call asm_fib_rek; call fib(n-1)
-        pop rdi         ; retrieve fib(n-2) from stack
-        add rax, rdi    ; fib(n-1) + fib(n-2)
+
+        pop rdx         ; retrieve fib(n-2) from stack
+        add rax, rdx    ; fib(n-1) + fib(n-2)
 
         ret
 
